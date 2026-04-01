@@ -178,3 +178,14 @@ with col_right:
 )
     st.link_button("💎 Go Premium — ₹99/month", 
                "https://rzp.io/l/rzp_test_SYG6sG4tSY0LC7")
+    st.title("StockAI - AI Based Stock Prediction Platform")
+st.write("This project is live and running.")
+st.sidebar.title("About")
+st.sidebar.info("StockAI predicts stock trends using AI models and financial data.")
+
+st.sidebar.title("Contact")
+st.sidebar.info("Email: diyasingh2717@gmail.com")
+import streamlit as st
+
+st.title("StockAI - AI Based Stock Prediction Platform")
+st.write("This is a live AI-powered stock prediction web application.")
