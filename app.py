@@ -187,5 +187,6 @@ st.sidebar.title("Contact")
 st.sidebar.info("Email: diyasingh2717@gmail.com")
 import streamlit as st
 
-st.title("StockAI - AI Based Stock Prediction Platform")
-st.write("This is a live AI-powered stock prediction web application.")
+
+st.title("StockAI Platform")
+st.write("AI-powered stock prediction platform built using Streamlit.")
