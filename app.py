@@ -206,3 +206,30 @@ qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://p
 st.sidebar.image(qr_url, caption="Scan with GPay/PhonePe/Paytm")
 st.sidebar.write(f"**Pay ₹{amount} to unlock**")
 st.sidebar.info("After paying, email your screenshot to: 2024ca56f@sigce.edu.in")
+from supabase import create_client
+
+# 1. Connect to Supabase (Use your actual keys here)
+url = "YOUR_SUPABASE_URL"
+key = "YOUR_SUPABASE_ANON_KEY"
+supabase = create_client(url, key)
+
+# 2. Show the QR Code (Already working!)
+st.sidebar.subheader("🚀 Pay ₹99 to Unlock Pro")
+# ... your existing QR code code here ...
+
+# 3. The Transaction Database Form
+st.sidebar.markdown("---")
+st.sidebar.write("### Confirm Your Payment")
+with st.sidebar.form("payment_form"):
+    u_email = st.text_input("Email used for payment")
+    u_ref = st.text_input("UPI Ref/UTR No. (12 digits)")
+    submit = st.form_submit_button("Verify My Payment")
+    
+    if submit:
+        if u_email and len(u_ref) >= 12:
+            # This saves the data to your Supabase table
+            data = {"email": u_email, "transaction_id": u_ref, "verified": False}
+            supabase.table("payments").insert(data).execute()
+            st.success("Details saved! Pro access will be active once we verify the Ref No.")
+        else:
+            st.error("Please enter a valid Email and 12-digit Ref No.")
