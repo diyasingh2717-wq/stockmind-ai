@@ -239,4 +239,4 @@ with col_right:
                    "https://rzp.io/l/rzp_test_SYG6sG4tSY0LC7")
     
     st.markdown("### StockAI - AI Based Stock Prediction Platform")
-    st.write("This project is live and running.") add in this
+    st.write("This project is live and running.") 
