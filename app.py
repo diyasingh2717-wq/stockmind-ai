@@ -190,3 +190,19 @@ import streamlit as st
 
 st.title("StockAI Platform")
 st.write("AI-powered stock prediction platform built using Streamlit.")
+import streamlit as st
+
+# ── INSTANT PAYMENT SECTION ────────────────────────────
+st.sidebar.markdown("---")
+st.sidebar.subheader("🚀 Activate Pro Instantly")
+
+# CONFIGURATION
+upi_id = "diyasingh2717@okicici"  # Ensure this is your correct UPI ID
+amount = "99"
+
+# Generate a QR Code using a free API
+qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa={upi_id}&am={amount}&cu=INR"
+
+st.sidebar.image(qr_url, caption="Scan with GPay/PhonePe/Paytm")
+st.sidebar.write(f"**Pay ₹{amount} to unlock**")
+st.sidebar.info("After paying, email your screenshot to: diyasingh2717@gmail.com")
