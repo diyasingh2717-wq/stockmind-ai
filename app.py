@@ -198,15 +198,15 @@ st.sidebar.write("**Step 2: Confirm Payment**")
 # THE DATABASE FORM
 with st.sidebar.form("payment_form"):
     cust_email = st.text_input("Your Email")
-    utr_no = st.text_input("12-Digit UPI Ref No. (UTR)")
+    utr_no = st.text_input("UPI transaction id")
     
     if st.form_submit_button("Activate My Pro Access"):
-        if "@" in cust_email and len(utr_no) >= 12:
+        if "@" in cust_email and len(upi_id) >= 12:
             try:
                 # SENDS DATA TO YOUR 'payments' TABLE
                 db_entry = {
                     "email": cust_email,
-                    "transaction_id": utr_no,
+                    "transaction_id": upi_id,
                     "verified": False
                 }
                 supabase.table("payments").insert(db_entry).execute()
@@ -214,7 +214,29 @@ with st.sidebar.form("payment_form"):
             except Exception as e:
                 st.sidebar.error("Database error. Ensure table 'payments' exists.")
         else:
-            st.sidebar.warning("Enter a valid Email and 12-digit UTR.")
+            st.sidebar.warning("Enter a valid Email and 12-digit UPI transaction.")
 
 st.sidebar.markdown("---")
 st.sidebar.write("📩 Contact: 2024ca56f@sigce.edu.in")
+with col_right:
+    # ── FEEDBACK SECTION ───────────────────────────
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">💬 Share Your Feedback</div>', unsafe_allow_html=True)
+    
+    st.write("Help us improve StockAI by filling out our quick feedback form.")
+    
+    # YOUR EXACT GOOGLE FORM LINK AS A BUTTON
+    st.link_button("📝 Open Google Feedback Form", 
+                   "https://docs.google.com/forms/d/e/1FAIpQLSepT-SWxjzAayz39w3bF-MM77GDiCas9oFmexh2H5rdNAqf3A/viewform?usp=header")
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # ── PREMIUM & FOOTER ──────────────────────────
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Your Payment Link
+    st.link_button("💎 Go Premium — ₹99/month", 
+                   "https://rzp.io/l/rzp_test_SYG6sG4tSY0LC7")
+    
+    st.markdown("### StockAI - AI Based Stock Prediction Platform")
+    st.write("This project is live and running.")
