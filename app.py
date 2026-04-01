@@ -14,8 +14,8 @@ if 'trial_count' not in st.session_state:
 FREE_LIMIT = 3
 
 # ── 3. DATABASE CONFIGURATION ──────────────────────
+# IMPORTANT: Delete the text below and paste your actual key carefully.
 SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
-# IMPORTANT: Paste your actual 'anon public' key from Supabase settings here
 SUPABASE_KEY = "PASTE_YOUR_LONG_ANON_KEY_HERE"
 
 try:
@@ -72,7 +72,6 @@ with col_left:
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">⚡ AI Prediction Engine</div>', unsafe_allow_html=True)
 
-    # Logic: Check if user is Pro OR still has Free Trials
     trials_left = FREE_LIMIT - st.session_state.trial_count
     can_use = st.session_state.is_pro or (trials_left > 0)
 
@@ -90,7 +89,6 @@ with col_left:
                         st.success(f"Signal: {trend} | Confidence: {prob*100:.1f}%")
                         st.metric("AI Target Price", f"{target:.2f}")
                         
-                        # Only count trials for non-pro users
                         if not st.session_state.is_pro:
                             st.session_state.trial_count += 1
                             st.rerun()
@@ -106,7 +104,6 @@ with col_left:
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right:
-    # FEEDBACK CARD (EMBEDDED GOOGLE FORM)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">💬 Project Feedback</div>', unsafe_allow_html=True)
     
@@ -114,22 +111,13 @@ with col_right:
     st.components.v1.iframe(google_form_url, height=550, scrolling=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # FOOTER ACTIONS
     st.link_button("💎 Go Premium — ₹99/month", "https://rzp.io/l/rzp_test_SYG6sG4tSY0LC7")
     st.markdown("### StockAI - AI Based Stock Prediction Platform")
-    st.write("Live Market Status: Active")
 
 # ── 7. SIDEBAR: PAYMENT & PRO UNLOCK ────────────
 st.sidebar.title("🚀 StockAI Pro")
 
 if not st.session_state.is_pro:
-    st.sidebar.markdown("""
-    **Pro Benefits:**
-    - Unlimited AI Predictions
-    - 99% Accuracy Signals
-    - Instant Target Prices
-    """)
-    
     upi_id = "2007diyasingh@okicici"
     qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa={upi_id}&am=99&cu=INR"
     st.sidebar.image(qr_url, caption="Scan & Pay ₹99 to Unlock")
@@ -141,18 +129,16 @@ if not st.session_state.is_pro:
         if st.form_submit_button("Activate Unlimited Access"):
             if "@" in u_email and len(u_utr) >= 12:
                 try:
-                    # Save to Supabase
                     db_data = {"email": u_email, "transaction_id": u_utr, "verified": False}
                     supabase.table("payments").insert(db_data).execute()
                     
-                    # Immediate Unlock
                     st.session_state.is_pro = True
-                    st.sidebar.success("✅ Pro Activated! Welcome.")
+                    st.sidebar.success("✅ Pro Activated!")
                     st.rerun()
                 except Exception:
                     st.sidebar.error("Database connection failed.")
             else:
-                st.sidebar.warning("Enter a valid email and 12-digit UTR.")
+                st.sidebar.warning("Enter valid email and 12-digit UTR.")
 else:
     st.sidebar.success("✨ PRO STATUS: ACTIVE")
     if st.sidebar.button("Logout / Reset Trials"):
