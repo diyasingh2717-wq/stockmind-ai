@@ -16,7 +16,7 @@ FREE_LIMIT = 3
 # ── 3. DATABASE CONFIGURATION ──────────────────────
 SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
 # IMPORTANT: Delete the placeholder and paste your key inside the quotes manually
-SUPABASE_KEY = "PASTE_YOUR_LONG_ANON_KEY_HERE"
+SUPABASE_KEY = "kxqandvimqemiqxzhane"
 
 try:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
