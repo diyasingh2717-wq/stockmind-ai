@@ -184,7 +184,7 @@ st.sidebar.title("About")
 st.sidebar.info("StockAI predicts stock trends using AI models and financial data.")
 
 st.sidebar.title("Contact")
-st.sidebar.info("Email: diyasingh2717@gmail.com")
+st.sidebar.info("Email: 2024ca56f@sigce.edu.in.com")
 import streamlit as st
 
 
@@ -197,7 +197,7 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("🚀 Activate Pro Instantly")
 
 # CONFIGURATION
-upi_id = "diyasingh2717@okicici"  # Ensure this is your correct UPI ID
+upi_id = "2007diyasingh@okicici"  # Ensure this is your correct UPI ID
 amount = "99"
 
 # Generate a QR Code using a free API
@@ -205,4 +205,4 @@ qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://p
 
 st.sidebar.image(qr_url, caption="Scan with GPay/PhonePe/Paytm")
 st.sidebar.write(f"**Pay ₹{amount} to unlock**")
-st.sidebar.info("After paying, email your screenshot to: diyasingh2717@gmail.com")
+st.sidebar.info("After paying, email your screenshot to: 2024ca56f@sigce.edu.in")
