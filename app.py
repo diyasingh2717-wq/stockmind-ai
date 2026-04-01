@@ -238,27 +238,52 @@ upi_link = f"upi://pay?pa={upi_id}&pn=StockAI&am=99&cu=INR"
 qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={upi_link}"
 st.sidebar.image(qr_url, caption="Scan to pay ₹99")
 
+import streamlit as st
+from supabase import create_client
+
+# ── DATABASE CONFIG ───────────────────────────
+# Using your specific Supabase credentials
+SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
+# Paste your actual 'anon' 'public' key inside the quotes below
+SUPABASE_KEY = "PASTE_YOUR_LONG_ANON_KEY_HERE"
+
+# Initialize Supabase client
+try:
+    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+except Exception as e:
+    st.error("Database connection failed. Check your API Key!")
+
+# ── SIDEBAR: PAYMENT & TRACKING ───────────────
+st.sidebar.markdown("---")
+st.sidebar.subheader("💎 Unlock Pro Access")
+
+# Using your specific UPI ID
+upi_id = "2007diyasingh@okicici"
+upi_link = f"upi://pay?pa={upi_id}&pn=StockAI&am=99&cu=INR"
+qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={upi_link}"
+
+st.sidebar.image(qr_url, caption="Scan to pay ₹99")
+st.sidebar.write("Step 2: Enter details to activate")
+
 # The Database Form
 with st.sidebar.form("payment_verification"):
-    email = st.text_input("Email ID")
-    ref_no = st.text_input("UPI Ref No. (12 Digits)")
+    email = st.text_input("Your Email Address")
+    ref_no = st.text_input("12-Digit UPI Ref No. (UTR)")
     
-    if st.form_submit_button("Submit for Approval"):
-        if email and len(ref_no) >= 12:
-            # Saving to your Supabase 'payments' table
-            try:
-                data = {"email": email, "transaction_id": ref_no, "verified": False}
-                supabase.table("payments").insert(data).execute()
-                st.sidebar.success("Submitted! We will verify and unlock your Pro access.")
-            except Exception as e:
-                st.sidebar.error("Database error. Please try again.")
-        else:
-            st.sidebar.warning("Please enter a valid email and 12-digit Ref No.")
+    submit = st.form_submit_button("Verify & Activate")
+    
     if submit:
-        if u_email and len(u_ref) >= 12:
-            # This saves the data to your Supabase table
-            data = {"email": u_email, "transaction_id": u_ref, "verified": False}
-            supabase.table("payments").insert(data).execute()
-            st.success("Details saved! Pro access will be active once we verify the Ref No.")
+        if "@" in email and len(ref_no) >= 12:
+            try:
+                # Saving to your 'payments' table
+                data = {
+                    "email": email, 
+                    "transaction_id": ref_no, 
+                    "verified": False
+                }
+                supabase.table("payments").insert(data).execute()
+                st.sidebar.success("✅ Details saved! We will verify and unlock Pro access.")
+            except Exception as e:
+                st.sidebar.error("Could not save. Make sure the table 'payments' exists in Supabase.")
         else:
-            st.error("Please enter a valid Email and 12-digit Ref No.")
+            st.sidebar.warning("Please enter a valid email and 12-digit Ref number.")
