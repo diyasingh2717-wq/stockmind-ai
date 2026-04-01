@@ -217,14 +217,43 @@ supabase = create_client(url, key)
 st.sidebar.subheader("🚀 Pay ₹99 to Unlock Pro")
 # ... your existing QR code code here ...
 
-# 3. The Transaction Database Form
+import streamlit as st
+from supabase import create_client
+
+# ── DATABASE CONFIG ───────────────────────────
+# Replace these with the actual values you just copied
+SUPABASE_URL = "https://your-project-id.supabase.co"
+SUPABASE_KEY = "your-anon-key-here"
+
+# Initialize Supabase client
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# ── YOUR QR CODE & FORM ────────────────────────
 st.sidebar.markdown("---")
-st.sidebar.write("### Confirm Your Payment")
-with st.sidebar.form("payment_form"):
-    u_email = st.text_input("Email used for payment")
-    u_ref = st.text_input("UPI Ref/UTR No. (12 digits)")
-    submit = st.form_submit_button("Verify My Payment")
+st.sidebar.subheader("💎 Unlock Pro Access")
+
+# Your working QR Code logic
+upi_id = "diyasingh2717@okicici"
+upi_link = f"upi://pay?pa={upi_id}&pn=StockAI&am=99&cu=INR"
+qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={upi_link}"
+st.sidebar.image(qr_url, caption="Scan to pay ₹99")
+
+# The Database Form
+with st.sidebar.form("payment_verification"):
+    email = st.text_input("Email ID")
+    ref_no = st.text_input("UPI Ref No. (12 Digits)")
     
+    if st.form_submit_button("Submit for Approval"):
+        if email and len(ref_no) >= 12:
+            # Saving to your Supabase 'payments' table
+            try:
+                data = {"email": email, "transaction_id": ref_no, "verified": False}
+                supabase.table("payments").insert(data).execute()
+                st.sidebar.success("Submitted! We will verify and unlock your Pro access.")
+            except Exception as e:
+                st.sidebar.error("Database error. Please try again.")
+        else:
+            st.sidebar.warning("Please enter a valid email and 12-digit Ref No.")
     if submit:
         if u_email and len(u_ref) >= 12:
             # This saves the data to your Supabase table
