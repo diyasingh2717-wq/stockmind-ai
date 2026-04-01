@@ -1,8 +1,23 @@
 import streamlit as st
 from src.predict import predict
+from supabase import create_client
+import datetime
 
+# ── 1. PAGE SETUP ─────────────────────────────────
 st.set_page_config(page_title="StockAI", page_icon="📈", layout="wide")
 
+# ── 2. DATABASE CONFIGURATION ──────────────────────
+# Using your specific Supabase credentials
+SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
+# IMPORTANT: Replace the string below with your actual 'anon public' key from Supabase settings
+SUPABASE_KEY = "PASTE_YOUR_LONG_ANON_KEY_HERE" 
+
+try:
+    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+except Exception as e:
+    st.error("Database connection failed. Please check your Supabase API Key.")
+
+# ── 3. CUSTOM CSS ──────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
@@ -81,13 +96,10 @@ div[data-baseweb="select"] > div {
     font-family: 'Syne', sans-serif !important; font-weight: 700 !important;
     font-size: 0.85rem !important; width: 100% !important; padding: 0.6rem !important;
 }
-.stSuccess > div, .stWarning > div, .stError > div {
-    border-radius: 8px !important; font-size: 0.82rem !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
-# ── TOP NAV ──────────────────────────────
+# ── 4. TOP NAV ──────────────────────────────
 st.markdown("""
 <div class="topnav">
   <span class="logo">◈ StockAI</span>
@@ -99,7 +111,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── STATS ─────────────────────────────────
+# ── 5. STATS ─────────────────────────────────
 st.markdown("""
 <div class="stats-row">
   <div class="stat-card">
@@ -120,7 +132,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── TWO COLUMNS ────────────────────────────
+# ── 6. MAIN CONTENT (TWO COLUMNS) ──────────
 col_left, col_right = st.columns([1, 1])
 
 with col_left:
@@ -156,13 +168,11 @@ with col_left:
                     """, unsafe_allow_html=True)
                 except Exception as e:
                     st.error(f"❌ {e}")
-
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right:
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">💬 Feedback</div>', unsafe_allow_html=True)
-
     with st.form("fb_form"):
         st.text_input("Your Name", placeholder="e.g. Rahul")
         st.selectbox("Type", ["Bug Report", "UI Suggestion", "Feature Request", "General"])
@@ -170,120 +180,41 @@ with col_right:
         st.text_area("Message", placeholder="What can we improve?", height=100)
         if st.form_submit_button("Submit Feedback →"):
             st.success("✅ Thanks! Feedback received.")
-
     st.markdown('</div>', unsafe_allow_html=True)
-    st.components.v1.iframe(
-    "https://docs.google.com/forms/d/e/1FAIpQLSepT-SWxjzAayz39w3bF-MM77GDiCas9oFmexh2H5rdNAqf3A/viewform?usp=publish-editor",
-    height=600, scrolling=True
-)
-    st.link_button("💎 Go Premium — ₹99/month", 
-               "https://rzp.io/l/rzp_test_SYG6sG4tSY0LC7")
-    st.title("StockAI - AI Based Stock Prediction Platform")
-st.write("This project is live and running.")
-st.sidebar.title("About")
-st.sidebar.info("StockAI predicts stock trends using AI models and financial data.")
 
-st.sidebar.title("Contact")
-st.sidebar.info("Email: 2024ca56f@sigce.edu.in.com")
-import streamlit as st
+# ── 7. SIDEBAR: PAYMENT & DATABASE TRACKING ──────
+st.sidebar.title("💎 StockAI Pro")
+st.sidebar.info("Get access to 99% accurate signals.")
 
-
-st.title("StockAI Platform")
-st.write("AI-powered stock prediction platform built using Streamlit.")
-import streamlit as st
-
-# ── INSTANT PAYMENT SECTION ────────────────────────────
-st.sidebar.markdown("---")
-st.sidebar.subheader("🚀 Activate Pro Instantly")
-
-# CONFIGURATION
-upi_id = "2007diyasingh@okicici"  # Ensure this is your correct UPI ID
-amount = "99"
-
-# Generate a QR Code using a free API
-qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa={upi_id}&am={amount}&cu=INR"
-
-st.sidebar.image(qr_url, caption="Scan with GPay/PhonePe/Paytm")
-st.sidebar.write(f"**Pay ₹{amount} to unlock**")
-st.sidebar.info("After paying, email your screenshot to: 2024ca56f@sigce.edu.in")
-from supabase import create_client
-
-# 1. Connect to Supabase (Use your actual keys here)
-url = "YOUR_SUPABASE_URL"
-key = "YOUR_SUPABASE_ANON_KEY"
-supabase = create_client(url, key)
-
-# 2. Show the QR Code (Already working!)
-st.sidebar.subheader("🚀 Pay ₹99 to Unlock Pro")
-# ... your existing QR code code here ...
-
-import streamlit as st
-from supabase import create_client
-
-# ── DATABASE CONFIG ───────────────────────────
-# Replace these with the actual values you just copied
-SUPABASE_URL = "https://your-project-id.supabase.co"
-SUPABASE_KEY = "your-anon-key-here"
-
-# Initialize Supabase client
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-# ── YOUR QR CODE & FORM ────────────────────────
-st.sidebar.markdown("---")
-st.sidebar.subheader("💎 Unlock Pro Access")
-
-# Your working QR Code logic
-upi_id = "diyasingh2717@okicici"
-upi_link = f"upi://pay?pa={upi_id}&pn=StockAI&am=99&cu=INR"
-qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={upi_link}"
-st.sidebar.image(qr_url, caption="Scan to pay ₹99")
-
-import streamlit as st
-from supabase import create_client
-
-# ── DATABASE CONFIG ───────────────────────────
-# Using your specific Supabase credentials
-SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
-# Paste your actual 'anon' 'public' key inside the quotes below
-SUPABASE_KEY = "PASTE_YOUR_LONG_ANON_KEY_HERE"
-
-# Initialize Supabase client
-try:
-    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-except Exception as e:
-    st.error("Database connection failed. Check your API Key!")
-
-# ── SIDEBAR: PAYMENT & TRACKING ───────────────
-st.sidebar.markdown("---")
-st.sidebar.subheader("💎 Unlock Pro Access")
-
-# Using your specific UPI ID
+# UPI & QR Config
 upi_id = "2007diyasingh@okicici"
 upi_link = f"upi://pay?pa={upi_id}&pn=StockAI&am=99&cu=INR"
 qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={upi_link}"
 
-st.sidebar.image(qr_url, caption="Scan to pay ₹99")
-st.sidebar.write("Step 2: Enter details to activate")
+st.sidebar.image(qr_url, caption="Scan to Pay ₹99")
+st.sidebar.markdown("---")
+st.sidebar.write("**Step 2: Confirm Payment**")
 
-# The Database Form
-with st.sidebar.form("payment_verification"):
-    email = st.text_input("Your Email Address")
-    ref_no = st.text_input("12-Digit UPI Ref No. (UTR)")
+# THE DATABASE FORM
+with st.sidebar.form("payment_form"):
+    cust_email = st.text_input("Your Email")
+    utr_no = st.text_input("12-Digit UPI Ref No. (UTR)")
     
-    submit = st.form_submit_button("Verify & Activate")
-    
-    if submit:
-        if "@" in email and len(ref_no) >= 12:
+    if st.form_submit_button("Activate My Pro Access"):
+        if "@" in cust_email and len(utr_no) >= 12:
             try:
-                # Saving to your 'payments' table
-                data = {
-                    "email": email, 
-                    "transaction_id": ref_no, 
+                # SENDS DATA TO YOUR 'payments' TABLE
+                db_entry = {
+                    "email": cust_email,
+                    "transaction_id": utr_no,
                     "verified": False
                 }
-                supabase.table("payments").insert(data).execute()
-                st.sidebar.success("✅ Details saved! We will verify and unlock Pro access.")
+                supabase.table("payments").insert(db_entry).execute()
+                st.sidebar.success("✅ Logged! Pro unlocks after verification.")
             except Exception as e:
-                st.sidebar.error("Could not save. Make sure the table 'payments' exists in Supabase.")
+                st.sidebar.error("Database error. Ensure table 'payments' exists.")
         else:
-            st.sidebar.warning("Please enter a valid email and 12-digit Ref number.")
+            st.sidebar.warning("Enter a valid Email and 12-digit UTR.")
+
+st.sidebar.markdown("---")
+st.sidebar.write("📩 Contact: 2024ca56f@sigce.edu.in")
