@@ -11,7 +11,7 @@ if 'is_pro' not in st.session_state:
 if 'trial_count' not in st.session_state:
     st.session_state.trial_count = 0
 
-FREE_LIMIT = 3
+FREE_LIMIT = 10
 
 # ── 3. DATABASE CONFIGURATION ──────────────────────
 SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
