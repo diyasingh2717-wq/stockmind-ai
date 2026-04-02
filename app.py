@@ -121,7 +121,7 @@ if not st.session_state.is_pro:
                         "utr_number": upi_tid, 
                         "verified": False
                     }
-                    supabase.table("payments").insert(data).execute()
+                   supabase.table("payments").insert(data).execute()
                     
                     st.session_state.is_pro = True
                     st.sidebar.success("✅ Pro Activated!")
