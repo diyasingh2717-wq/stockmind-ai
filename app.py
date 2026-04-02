@@ -187,3 +187,22 @@ with st.sidebar.form("pay_form"):
                 st.rerun()
             except Exception as e:
                 st.sidebar.error(f"Error: {e}")
+if st.form_submit_button("Activate Unlimited Access"):
+            if "@" in email and len(upi_tid) >= 12:
+                try:
+                    data = {
+                        "email": email, 
+                        "transaction_id": upi_tid, 
+                        "utr_number": upi_tid, 
+                        "verified": False
+                    }
+                    # Ensure the line below is indented exactly like the 'data' variable above
+                    supabase.table("payments").insert(data).execute()
+                    
+                    st.session_state.is_pro = True
+                    st.sidebar.success("✅ Pro Activated!")
+                    st.rerun()
+                except Exception as e:
+                    st.sidebar.error(f"Database error: {e}")
+            else:
+                st.sidebar.warning("Enter valid email and 12-digit Transaction ID.")
