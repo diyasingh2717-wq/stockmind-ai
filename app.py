@@ -121,7 +121,7 @@ if not st.session_state.is_pro:
                         "verified": False
                     }
                     # FIXED INDENTATION AND CALL
-                    supabase.table("payments").insert(data).execute()
+                    supabase.table("premium_users").insert(data).execute()
                     
                     st.session_state.is_pro = True
                     st.sidebar.success("✅ Pro Activated!")
