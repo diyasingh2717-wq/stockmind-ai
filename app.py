@@ -16,8 +16,7 @@ FREE_LIMIT = 10
 # ── 3. DATABASE CONFIGURATION ──────────────────────
 SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
 # IMPORTANT: Use your long 'anon public' key from Supabase Settings -> API
-SUPABASE_KEY = "kxqandvimqemiqxzhane" 
-
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 try:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 except Exception:
