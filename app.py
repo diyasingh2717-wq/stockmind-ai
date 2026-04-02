@@ -15,8 +15,8 @@ FREE_LIMIT = 10
 
 # ── 3. DATABASE CONFIGURATION ──────────────────────
 SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
-# IMPORTANT: You MUST paste the long key starting with 'eyJ' here for it to work
-SUPABASE_KEY = "kxqandvimqemiqxzhane"
+# IMPORTANT: Paste your long anon key here to fix the 401 error
+SUPABASE_KEY = "kxqandvimqemiqxzhane" 
 
 try:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -114,20 +114,21 @@ if not st.session_state.is_pro:
         if st.form_submit_button("Activate Unlimited Access"):
             if "@" in email and len(upi_tid) >= 12:
                 try:
+                    # Original logic mapping
                     data = {
                         "email": email, 
                         "transaction_id": upi_tid, 
                         "utr_number": upi_tid, 
                         "verified": False
                     }
-                    # FIXED INDENTATION AND CALL
-                    supabase.table("premium_users").insert(data).execute()
+                    # Fixed indentation line
+                    supabase.table("payments").insert(data).execute()
                     
                     st.session_state.is_pro = True
                     st.sidebar.success("✅ Pro Activated!")
                     st.rerun()
-                except Exception as e:
-                    st.sidebar.error(f"Database error: {e}")
+                except Exception:
+                    st.sidebar.error("Database connection failed. Verify table permissions.")
             else:
                 st.sidebar.warning("Enter valid email and 12-digit Transaction ID.")
 else:
