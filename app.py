@@ -15,8 +15,8 @@ FREE_LIMIT = 10
 
 # ── 3. DATABASE CONFIGURATION ──────────────────────
 SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
-# IMPORTANT: Delete the placeholder and paste your key inside the quotes manually
-SUPABASE_KEY = "kxqandvimqemiqxzhane"
+# IMPORTANT: Use your long 'anon public' key from Supabase Settings -> API
+SUPABASE_KEY = "kxqandvimqemiqxzhane" 
 
 try:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -114,89 +114,13 @@ if not st.session_state.is_pro:
         if st.form_submit_button("Activate Unlimited Access"):
             if "@" in email and len(upi_tid) >= 12:
                 try:
-                    # Maps the input to both possible column names in your Supabase table
                     data = {
                         "email": email, 
                         "transaction_id": upi_tid, 
                         "utr_number": upi_tid, 
                         "verified": False
                     }
-                   supabase.table("payments").insert(data).execute()
-                    
-                    st.session_state.is_pro = True
-                    st.sidebar.success("✅ Pro Activated!")
-                    st.rerun()
-                except Exception:
-                    st.sidebar.error("Database connection failed. Verify table permissions.")
-            else:
-                st.sidebar.warning("Enter valid email and 12-digit Transaction ID.")
-else:
-    st.sidebar.success("✨ PRO STATUS: ACTIVE")
-    if st.sidebar.button("Logout / Reset Trials"):
-        st.session_state.is_pro = False
-        st.session_state.trial_count = 0
-        st.rerun()
-        import streamlit as st
-import sqlite3
-from src.predict import predict
-
-# -- 1. DATABASE FUNCTION --
-def save_user(email, upi_id):
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO premium_users (email, upi_id) VALUES (?, ?)", (email, upi_id))
-    conn.commit()
-    conn.close()
-
-# -- 2. UI SETUP --
-st.set_page_config(page_title="StockAI", layout="wide")
-
-if 'is_pro' not in st.session_state:
-    st.session_state.is_pro = False
-
-# -- 3. MAIN APP --
-col_left, col_right = st.columns(2)
-
-with col_left:
-    st.subheader("⚡ AI Prediction")
-    if st.session_state.is_pro:
-        stock = st.text_input("Enter Symbol")
-        if st.button("Predict"):
-            # Your prediction logic here
-            st.success("Pro Feature Active!")
-    else:
-        st.warning("Locked: Use Sidebar to Unlock")
-
-with col_right:
-    st.subheader("💬 Feedback")
-    form_url = "https://docs.google.com/forms/d/e/1FAIpQLSepT-SWxjzAayz39w3bF-MM77GDiCas9oFmexh2H5rdNAqf3A/viewform?embedded=true"
-    st.components.v1.iframe(form_url, height=500)
-
-# -- 4. SIDEBAR --
-st.sidebar.title("🚀 Unlock Pro")
-with st.sidebar.form("pay_form"):
-    u_email = st.text_input("Email")
-    u_upi = st.text_input("UPI Transaction ID")
-    
-    if st.form_submit_button("Activate"):
-        if "@" in u_email and len(u_upi) >= 12:
-            try:
-                save_user(u_email, u_upi)
-                st.session_state.is_pro = True
-                st.sidebar.success("✅ Saved to VS Code DB!")
-                st.rerun()
-            except Exception as e:
-                st.sidebar.error(f"Error: {e}")
-if st.form_submit_button("Activate Unlimited Access"):
-            if "@" in email and len(upi_tid) >= 12:
-                try:
-                    data = {
-                        "email": email, 
-                        "transaction_id": upi_tid, 
-                        "utr_number": upi_tid, 
-                        "verified": False
-                    }
-                    # Ensure the line below is indented exactly like the 'data' variable above
+                    # Perfectly aligned indentation for Supabase logic
                     supabase.table("payments").insert(data).execute()
                     
                     st.session_state.is_pro = True
@@ -206,3 +130,9 @@ if st.form_submit_button("Activate Unlimited Access"):
                     st.sidebar.error(f"Database error: {e}")
             else:
                 st.sidebar.warning("Enter valid email and 12-digit Transaction ID.")
+else:
+    st.sidebar.success("✨ PRO STATUS: ACTIVE")
+    if st.sidebar.button("Logout / Reset Trials"):
+        st.session_state.is_pro = False
+        st.session_state.trial_count = 0
+        st.rerun()
