@@ -15,8 +15,9 @@ FREE_LIMIT = 10
 
 # ── 3. DATABASE CONFIGURATION ──────────────────────
 SUPABASE_URL = "https://kxqandvimqemiqxzhane.supabase.co"
-# IMPORTANT: Use your long 'anon public' key from Supabase Settings -> API
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+# IMPORTANT: You MUST paste the long key starting with 'eyJ' here for it to work
+SUPABASE_KEY = "kxqandvimqemiqxzhane"
+
 try:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 except Exception:
@@ -119,7 +120,7 @@ if not st.session_state.is_pro:
                         "utr_number": upi_tid, 
                         "verified": False
                     }
-                    # Perfectly aligned indentation for Supabase logic
+                    # FIXED INDENTATION AND CALL
                     supabase.table("payments").insert(data).execute()
                     
                     st.session_state.is_pro = True
